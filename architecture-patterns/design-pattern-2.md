@@ -70,6 +70,12 @@ view.person = model;
 
 ## MVP (Model-View-Presenter)
 
+MVC는 View와 Model사이의 의존성이 존재했지만 MVP에서는 의존성을 제거
+presenter는 `Model로 부터 데이터를 받는 역할을 대신 실천`, 또한 `view controller의 생명주기에 관여하지 않음`
+presenter는 view에 쉽게 접근 가능
+ 
+단순히 Controller의 부하만 떨어뜨린것이 아닌 "테스트 용이성"의 장점도 탄생
+
 ```swift
 import UIKit
 
@@ -128,6 +134,16 @@ view.presenter = presenter
 ```
 
 ## MVVM (Model-View-View Model)
+
+View속에 Controller가 내제되어 있으며, View Model은 View에 대한 데이터 정보를 모르고(뷰 자체 안에서 처리) `데이터 바인딩 실현*`(contorller에 대한 부하 감소)
+ 
+MVC에서는 Controller에 많은 부하를 주었기 때문에 View쪽으로 Controller를 보내고 비어있는 Controller자리에 중재역할을 할 View Model 개념을 삽입한 것 뿐
+ 
+MVP는 Presenter가 View의 정보를 알고 update하지만, `MVVM에서는 View Model이 View의 정보를 모름`
+ - `View와 View Model은 1대 n 관계`
+ 
+* 데이터 바인딩(binding) : View와 View Model 사이의 양방향 데이터 흐름 (옵저버 프로퍼티의 didSet과 같은 것이 바인딩의 예 -단방향 바인딩)
+
 
 ```swift
 import UIKit
@@ -188,6 +204,23 @@ view.viewModel = viewModel
 ## VIPER
 
 **LEGO building experience transferred into the iOS app design**
+
+### 기본 구조
+
+[VIPER-Template](https://github.com/zafarivaev/VIPER-Template)
+
+### 역할 
+
+- **Interactor** — contains business logic related to the data (**Entities**) or networking, like creating new instances of entities or fetching them from the server. For those purposes you’ll use some *Services* and *Managers* which are not considered as a part of VIPER module but rather an external dependency.
+
+- **Presenter** — contains the UI related (but UIKit *independent*) business logic, invokes methods on the **Interactor**.
+
+- **View** - 뷰의 기능만을 수행하게 만든다. 다른 모든 작업은 presenter나 interactor에게 맡긴다.
+
+- **Entities** — your plain data objects, not the *data access layer,* because that is a responsibility of the **Interactor**.
+
+- **Router** — responsible for the segues between the VIPER **modules**.
+
 
 ```swift
 
